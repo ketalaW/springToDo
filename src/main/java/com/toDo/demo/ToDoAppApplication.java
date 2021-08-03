@@ -5,11 +5,12 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.rest.core.event.ValidatingRepositoryEventListener;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurer;
-import org.springframework.validation.Validator;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+import javax.validation.Validator;
+
 @SpringBootApplication
-public class ToDoAppApplication implements RepositoryRestConfigurer {
+public class ToDoAppApplication{
 
 	public static void main(String[] args) {
 		SpringApplication.run(ToDoAppApplication.class, args);
@@ -18,13 +19,6 @@ public class ToDoAppApplication implements RepositoryRestConfigurer {
 	@Bean
 	public Validator validator() {
 		return new LocalValidatorFactoryBean();
-	}
-
-	@Override
-	public void configureValidatingRepositoryEventListener(ValidatingRepositoryEventListener validatingListener) {
-		RepositoryRestConfigurer.super.configureValidatingRepositoryEventListener(validatingListener);
-		validatingListener.addValidator("beforeCreate", validator());
-		validatingListener.addValidator("beforeSafe", validator());
 	}
 
 }

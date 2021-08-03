@@ -1,23 +1,21 @@
 package com.toDo.demo.model;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.repository.query.Param;
-import org.springframework.data.rest.core.annotation.RepositoryRestResource;
-import org.springframework.data.rest.core.annotation.RestResource;
 
 import java.util.List;
+import java.util.Optional;
 
-//@RepositoryRestResource(path = "todos", collectionResourceRel = "todos" )
-@RepositoryRestResource
-public interface TaskRepository extends JpaRepository<Task, Integer> {
-    @Override
-    @RestResource(exported = false)
-    void deleteById(Integer integer);
+public interface TaskRepository {
+    List<Task> findAll();
 
-    @Override
-    @RestResource(exported = false)
-    void delete(Task task);
+    Optional<Task> findById(Integer id);
 
-    @RestResource(path = "done", rel = "done")
+    Task save(Task entity);
+
+    Page<Task> findAll(Pageable page);
+
     List<Task> findByDone(@Param("state") boolean done);
 }
