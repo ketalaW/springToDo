@@ -2,6 +2,7 @@ package com.toDo.demo.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "tasks")
@@ -14,11 +15,20 @@ public class Task {
     private String description;
     private boolean done;
 
+    private LocalDateTime deadline;
+
+    private LocalDateTime createdOn;
+    private LocalDateTime updateOn;
+
     public Task() {
     }
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public boolean isDone() {
@@ -35,5 +45,13 @@ public class Task {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(LocalDateTime deadline) {
+        this.deadline = deadline;
     }
 }

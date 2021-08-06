@@ -1,0 +1,11 @@
+
+  spring:
+    h2:
+      console:
+        enabled: true
+        path: '/console'
+    datasource:
+      url: 'jdbc:h2:file:/C:/Users/AlmarMW/Desktop/demo/demo/todo-db'
+    jpa:
+      hibernate:
+        ddl-auto: validate

@@ -2,7 +2,6 @@ package com.toDo.demo.model;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Slice;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -13,9 +12,11 @@ public interface TaskRepository {
 
     Optional<Task> findById(Integer id);
 
+    boolean existsById(Integer id);
+
     Task save(Task entity);
 
     Page<Task> findAll(Pageable page);
 
-    List<Task> findByDone(@Param("state") boolean done);
+    List<Task> findByDone(boolean done);
 }
