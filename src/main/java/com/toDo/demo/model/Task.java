@@ -14,20 +14,27 @@ public class Task {
     @NotBlank(message = "Opis nie może, byc pusty")
     private String description;
     private boolean done;
-
     private LocalDateTime deadline;
+    @Embedded
+    private Audit audit = new Audit();
 
-    private LocalDateTime createdOn;
-    private LocalDateTime updateOn;
+    @ManyToOne
+    @JoinColumn(name = "task_group_id")
+    private TaskGroup group;
 
-    public Task() {
+    Task() {
+    }
+
+    public Task(String description, LocalDateTime deadline) {
+      this.description = description;
+      this.deadline = deadline;
     }
 
     public int getId() {
         return id;
     }
 
-    public void setId(int id) {
+    void setId(int id) {
         this.id = id;
     }
 
@@ -54,4 +61,20 @@ public class Task {
     public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
+
+    public TaskGroup getGroup() {
+        return group;
+    }
+
+    public void setGroup(TaskGroup group) {
+        this.group = group;
+    }
+
+    public void updateFrom(final Task source){
+        description = source.description;
+        done = source.done;
+        deadline = source.deadline;
+        group = source.group;
+    }
+
 }

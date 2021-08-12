@@ -14,7 +14,7 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
-@RestController
+@ RestController
 public class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
@@ -55,13 +55,17 @@ public class TaskController {
         return ResponseEntity.created(URI.create("/tasks/" + result.getId())).body(result);
     }
 
+    //@Transactional
     @PutMapping(value = "/tasks/{id}")
     ResponseEntity<?> updateTask(@PathVariable int id, @Valid @RequestBody Task toUpdate) {
         if(!repository.existsById(id)){
             return  ResponseEntity.notFound().build();
         }
-        toUpdate.setId(id);
-        repository.save(toUpdate);
+        repository.findById(id)
+                .ifPresent(task -> {
+                    task.updateFrom(toUpdate);
+                    repository.save(task);
+                });
         return ResponseEntity.noContent().build();
     }
 
