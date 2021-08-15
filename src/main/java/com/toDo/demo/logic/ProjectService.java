@@ -3,6 +3,7 @@ package com.toDo.demo.logic;
 import com.toDo.demo.TaskConfigurationProperties;
 import com.toDo.demo.model.*;
 import com.toDo.demo.model.projection.GroupReadModel;
+import com.toDo.demo.model.projection.GroupTaskWriteModel;
 import com.toDo.demo.model.projection.GroupWriteModel;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
@@ -17,43 +18,44 @@ public class ProjectService {
     private ProjectRepository projectRepository;
     private TaskGroupRepository taskGroupRepository;
     private TaskConfigurationProperties config;
+    private TaskGroupService taskGroupService;
 
-    public ProjectService(ProjectRepository projectRepository, TaskGroupRepository taskGroupRepository, TaskConfigurationProperties config) {
+    public ProjectService(ProjectRepository projectRepository, TaskGroupRepository taskGroupRepository, TaskConfigurationProperties config, TaskGroupService service) {
         this.projectRepository = projectRepository;
         this.taskGroupRepository = taskGroupRepository;
         this.config = config;
+        this.taskGroupService = service;
     }
 
     public List<Project> readAll() {
-       return projectRepository.findAll();
+        return projectRepository.findAll();
     }
 
-    public Project save(final Project toSave){
+    public Project save(final Project toSave) {
         return projectRepository.save(toSave);
     }
 
-    public GroupReadModel createGroup(int projectId, LocalDateTime deadline){
-        if(!config.getTemplate().isAllowMultipleTasks() && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)){
+    public GroupReadModel createGroup(int projectId, LocalDateTime deadline) {
+        if (!config.getTemplate().isAllowMultipleTasks() && taskGroupRepository.existsByDoneIsFalseAndProject_Id(projectId)) {
             throw new IllegalArgumentException("Tylko jedna grupa zadań jest dozwolana w projektcie.");
         }
-        TaskGroup result = projectRepository.findById(projectId)
+
+        return projectRepository.findById(projectId)
                 .map(project -> {
-                    var targetGroup = new TaskGroup();
+                    var targetGroup = new GroupWriteModel();
                     targetGroup.setDescription(project.getDescription());
                     targetGroup.setTasks(
                             project.getSteps().stream()
-                                    .map(projectStep -> new Task(
-                                            projectStep.getDescription(),
-                                            deadline.plusDays(projectStep.getDaysToDeadline())))
-                                    .collect(Collectors.toSet())
-                    );
-                    targetGroup.setProject(project);
-                    return taskGroupRepository.save(targetGroup);
-                }).orElseThrow(() -> new IllegalArgumentException("Nie znaleziono projektu o podannym id") );
-
-       return new GroupReadModel(result);
+                                    .map(projectStep -> {
+                                                var task = new GroupTaskWriteModel();
+                                                task.setDescription(projectStep.getDescription());
+                                                task.setDeadline(deadline.plusDays(projectStep.getDaysToDeadline()));
+                                                return task;
+                                            })
+                                                    .collect(Collectors.toSet())
+                                    );
+                    return taskGroupService.createGroup(targetGroup);
+                }).orElseThrow(() -> new IllegalArgumentException("Nie znaleziono projektu o podannym id"));
     }
-
-
 
 }

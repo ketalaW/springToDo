@@ -39,7 +39,9 @@ public class TaskController {
     ResponseEntity<Task> readTask(@PathVariable int id) {
         logger.warn("Poprano pojedynczo zadanie");
 
-        return repository.findById(id).map(task -> ResponseEntity.ok(task)).orElse(ResponseEntity.notFound().build());
+        return repository.findById(id)
+                .map(task -> ResponseEntity.ok(task))
+                .orElse(ResponseEntity.notFound().build());
 //    ResponseEntity<Optional<Task>> readTask(@PathVariable int id) {
 //        logger.warn("Poprano pojedynczo zadanie");
 //        if(!repository.existsById(id)){
