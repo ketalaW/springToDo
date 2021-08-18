@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 //@RepositoryRestResource(path = "todos", collectionResourceRel = "todos" )
 @Repository
 public interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, Integer> {
@@ -18,4 +20,7 @@ public interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, I
 
     @Override
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
+
+    @Override
+    List<Task> findAllByGroup_Id(Integer groupId);
 }

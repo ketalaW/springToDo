@@ -1,5 +1,6 @@
 package com.toDo.demo.model;
 
+import com.toDo.demo.model.projection.GroupReadModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.query.Param;
@@ -13,6 +14,8 @@ public interface TaskRepository {
     Optional<Task> findById(Integer id);
 
     boolean existsById(Integer id);
+
+    List<Task> findAllByGroup_Id(Integer groupId);
 
     boolean existsByDoneIsFalseAndGroup_Id(Integer groupId);
 

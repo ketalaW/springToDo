@@ -39,7 +39,7 @@ public class TaskGroupService {
 
     public void toggleGroup(int groupId){
         if(taskRepository.existsByDoneIsFalseAndGroup_Id(groupId)){
-            throw new IllegalArgumentException("Grupa posiada niezakończone zadanie");
+            throw new IllegalStateException("Grupa posiada niezakończone zadanie");
         }
         TaskGroup result = repository.findById(groupId)
                 .orElseThrow(() -> new IllegalArgumentException("Grupa o takim id nie została znaleziona"));

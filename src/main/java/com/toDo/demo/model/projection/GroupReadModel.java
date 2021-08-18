@@ -1,5 +1,6 @@
 package com.toDo.demo.model.projection;
 
+import com.toDo.demo.model.Task;
 import com.toDo.demo.model.TaskGroup;
 
 import java.time.LocalDateTime;
@@ -8,6 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 public class GroupReadModel {
+    private int id;
     private String description;
     /**
      * deadline from the latest task in group
@@ -16,12 +18,15 @@ public class GroupReadModel {
     private Set<GroupTaskReadModel> tasks;
 
     public GroupReadModel(TaskGroup source) {
-        this.description = source.getDescription();
+        id = source.getId();
+        description = source.getDescription();
         source.getTasks().stream()
-                .map(task -> task.getDeadline())
+                .map(Task::getDeadline)
                 .max(LocalDateTime::compareTo)
                 .ifPresent(date -> deadline = date);
-        tasks = source.getTasks().stream().map(GroupTaskReadModel::new).collect(Collectors.toSet());
+        tasks = source.getTasks().stream()
+                .map(GroupTaskReadModel::new)
+                .collect(Collectors.toSet());
 
     }
 
@@ -47,5 +52,13 @@ public class GroupReadModel {
 
     public void setTasks(Set<GroupTaskReadModel> tasks) {
         this.tasks = tasks;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

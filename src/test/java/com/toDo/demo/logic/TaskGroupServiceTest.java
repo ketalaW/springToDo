@@ -19,7 +19,7 @@ class TaskGroupServiceTest {
 
 
     @Test
-    @DisplayName("Powinien wyrzucić IllegalArgumentException, gdy grupa posiada niezakończone zadanie")
+    @DisplayName("Powinien wyrzucić IllegalStateException, gdy grupa posiada niezakończone zadanie")
     void toggleGroup_notAllDoneTask_throwsIllegalArgumentException() {
         var mockTaskRepositorium = mock(TaskRepository.class);
         when(mockTaskRepositorium.existsByDoneIsFalseAndGroup_Id(anyInt())).thenReturn(true);
@@ -31,7 +31,7 @@ class TaskGroupServiceTest {
         var exception =  catchThrowable(()->toTest.toggleGroup(1));
 
         assertThat(exception)
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("niezakończone zadanie");
     }
 

@@ -69,11 +69,11 @@ public class Task {
         this.deadline = deadline;
     }
 
-    public TaskGroup getGroup() {
+    TaskGroup getGroup() {
         return group;
     }
 
-    public void setGroup(TaskGroup group) {
+    void setGroup(TaskGroup group) {
         this.group = group;
     }
 
