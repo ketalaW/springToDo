@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
@@ -45,6 +46,15 @@ public class TaskController {
     ResponseEntity<List<Task>> readDoneTasks(@RequestParam(defaultValue = "true") boolean state){
         return ResponseEntity.ok(
                 repository.findByDone(state)
+        );
+    }
+
+    @GetMapping("/search/today")
+    ResponseEntity<List<Task>> readTodayTasks(){
+        LocalDateTime now = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+        logger.warn(now.toString());
+        return ResponseEntity.ok(
+                repository.findAllDoneTaskToday(now)
         );
     }
 

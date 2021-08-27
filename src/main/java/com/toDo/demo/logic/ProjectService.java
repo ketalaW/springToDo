@@ -5,6 +5,7 @@ import com.toDo.demo.model.*;
 import com.toDo.demo.model.projection.GroupReadModel;
 import com.toDo.demo.model.projection.GroupTaskWriteModel;
 import com.toDo.demo.model.projection.GroupWriteModel;
+import com.toDo.demo.model.projection.ProjectWriteModel;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -31,8 +32,8 @@ public class ProjectService {
         return projectRepository.findAll();
     }
 
-    public Project save(final Project toSave) {
-        return projectRepository.save(toSave);
+    public Project save(final ProjectWriteModel toSave) {
+        return projectRepository.save(toSave.toProject());
     }
 
     public GroupReadModel createGroup(int projectId, LocalDateTime deadline) {

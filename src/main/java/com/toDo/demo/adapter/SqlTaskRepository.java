@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 //@RepositoryRestResource(path = "todos", collectionResourceRel = "todos" )
@@ -23,4 +24,8 @@ public interface SqlTaskRepository extends TaskRepository, JpaRepository<Task, I
 
     @Override
     List<Task> findAllByGroup_Id(Integer groupId);
+
+    @Override
+    @Query(nativeQuery = true, value = "select * from tasks where (deadline IS NULL OR deadline < :date) AND (done=false)")
+    List<Task> findAllDoneTaskToday(@Param("date") LocalDateTime date);
 }

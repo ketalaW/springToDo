@@ -22,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(TaskController.class)
-public class TaskControllerLightIntegrationTest {
+public class    TaskControllerLightIntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
