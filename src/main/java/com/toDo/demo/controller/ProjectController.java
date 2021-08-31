@@ -4,6 +4,7 @@ import com.toDo.demo.logic.ProjectService;
 import com.toDo.demo.model.Project;
 import com.toDo.demo.model.ProjectStep;
 import com.toDo.demo.model.projection.ProjectWriteModel;
+import io.micrometer.core.annotation.Timed;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -53,6 +54,7 @@ public class ProjectController {
         return "projects";
     }
 
+    @Timed(value = "project.create.group", histogram = true, percentiles = {0.5, 0.95, 0.99})
     @PostMapping("/{id}")
     String createGroup(
             @ModelAttribute("project") ProjectWriteModel current,
@@ -67,7 +69,7 @@ public class ProjectController {
         catch (IllegalArgumentException | IllegalStateException e){
             model.addAttribute("message", "Błąd podczas tworzenia grupy!");
         }
-        return "project";
+        return "projects";
     }
 
     @ModelAttribute("projects")
