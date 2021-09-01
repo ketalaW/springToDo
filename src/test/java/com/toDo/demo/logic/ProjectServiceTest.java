@@ -82,7 +82,7 @@ class ProjectServiceTest {
     void createGroup_configurationOk_existinProject_createsAndSavesGroup() {
 
         var today = LocalDate.now().atStartOfDay();
-        var project =  projectWith("xiaomi", Set.of(-1, -2));
+        var project = projectWith("xiaomi", Set.of(-1, -2));
         var mockRepository = mock(ProjectRepository.class);
         when(mockRepository.findById(anyInt()))
                 .thenReturn(Optional.of(project));
@@ -126,6 +126,11 @@ class ProjectServiceTest {
             return map.values().size();
         }
 
+        @Override
+        public boolean existsByDescription(final String description) {
+            return map.values().stream()
+                    .anyMatch(group -> group.getDescription().equals(description));
+        }
 
         @Override
         public List<TaskGroup> findAll() {
