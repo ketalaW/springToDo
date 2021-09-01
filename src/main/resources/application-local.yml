@@ -5,7 +5,7 @@
         enabled: true
         path: '/console'
     datasource:
-        url: 'jdbc:h2:file:/C:/Users/AlmarMW/Desktop/demo/demo/todo-db'
+        url: 'jdbc:h2:file:/F:/Projekty/springToDo/todo-db'
     jpa:
       hibernate:
         ddl-auto: validate

@@ -6,6 +6,7 @@ import com.toDo.demo.model.Task;
 import com.toDo.demo.model.TaskRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,18 +16,17 @@ import javax.validation.Valid;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
     public static final Logger logger = LoggerFactory.getLogger(TaskController.class);
     private final TaskRepository repository;
-    private final TaskService service;
+    private final ApplicationEventPublisher eventPublisher;
 
-    TaskController(final TaskRepository repository, TaskService service) {
+    TaskController(final TaskRepository repository,  ApplicationEventPublisher eventPublisher) {
         this.repository = repository;
-        this.service = service;
+        this.eventPublisher = eventPublisher;
     }
 
     @GetMapping(params = {"!sort", "!page", "size"})
@@ -96,7 +96,8 @@ public class TaskController {
             return  ResponseEntity.notFound().build();
         }
         repository.findById(id)
-                .ifPresent(task -> task.setDone(!task.isDone()));
+                .map(Task::toggle)
+                .ifPresent(eventPublisher::publishEvent);
 
         return ResponseEntity.noContent().build();
     }
