@@ -95,4 +95,10 @@ class TaskGroupController {
     }
 
 
+    @GetMapping(value = "provider/{provider}")
+    public ResponseEntity<?> getAsciiCode(@PathVariable String provider){
+        service.getProviderCodeAsAscii(provider);
+        return ResponseEntity.ok("dasdasd");
+    }
+
 }

@@ -26,4 +26,5 @@ public class TaskService {
         logger.info("Rozpoczęcie funkcji asynchronicznie");
         return CompletableFuture.supplyAsync(repository::findAll);
     }
+
 }

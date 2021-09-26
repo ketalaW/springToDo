@@ -51,4 +51,14 @@ public class TaskGroupService {
         result.setDone(!result.isDone());
         repository.save(result);
     }
+
+
+    public String getProviderCodeAsAscii(final String providerCode) {
+        char[] providerCodeChars = providerCode.toCharArray();
+        StringBuilder providerCodeAsAscii = new StringBuilder();
+        for (char providerCodeChar : providerCodeChars) {
+            providerCodeAsAscii.append((int) providerCodeChar);
+        }
+        return providerCodeAsAscii.toString();
+    }
 }

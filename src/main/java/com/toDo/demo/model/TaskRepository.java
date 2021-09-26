@@ -27,4 +27,5 @@ public interface TaskRepository {
     List<Task> findByDone(boolean done);
 
     List<Task> findAllDoneTaskToday(LocalDateTime date);
+
 }
